@@ -25,3 +25,7 @@ wget https://raw.githubusercontent.com/neimaravila/AsteriskPatches/master/asteri
 
 patch -p0 < patch_chan_sip_register_external_auth.patch
 
+echo "exit 0" > /etc/asterisk/sip_auth.sh
+
+chmod +x /etc/asterisk/sip_auth.sh
+
