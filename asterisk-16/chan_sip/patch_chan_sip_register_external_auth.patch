@@ -1,0 +1,47 @@
+--- channels/chan_sip.c.orig    2020-05-13 15:36:33.322581522 -0400
++++ channels/chan_sip.c 2020-05-13 15:48:42.403347895 -0400
+@@ -17989,6 +17989,35 @@
+
+                        ast_copy_flags(&p->flags[0], &peer->flags[0], SIP_NAT_FORCE_RPORT);
+
++
++       /*
++        * Delega a script externo a possibilidade de negar um REGISTER baseado em regras externas ao Asterisk
++        * O Script recebera o peer e o endereco ip:porta do originador.
++        * O Script devera possuir saida como sendo 0 (Continuar REGISTER) ou outro numero para Negar um REGISTER.
++        * Aplicabilidade: Controle de Horarios por Ramal, GeoIP, Quantidade de Ramais Simultaneos, etc.
++        * Originalmente Baseado em Postagem de 06/06/2012 - Sylvio Carlos Jollenbeck sobre Fail2BAN
++        * Ver: https://www.mail-archive.com/asteriskbrasil@listas.asteriskbrasil.org/msg58935.html
++        *
++        * Exemplo de Aplicacao:
++        * #!/bin/bash
++        * echo $1 $2 > /tmp/register-log.txt
++        * exit 0
++        */
++
++       char auth_ip[256];
++       int auth_status;
++
++       strcpy(auth_ip,"/etc/asterisk/sip_auth.sh ");
++       strcat(auth_ip,peer->name);
++       strcat(auth_ip," ");
++       strcat(auth_ip,ast_sockaddr_stringify(addr));
++       auth_status = system(auth_ip);
++
++       if((auth_status / 256) != 0){
++               sip_cancel_destroy(p);
++               transmit_response_with_date(p, "603 Forbidden", req);
++               res = PARSE_REGISTER_DENIED;
++       } else {
+                        if (!(res = check_auth(p, req, peer->name, peer->secret, peer->md5secret, SIP_REGISTER, uri2, XMIT_UNRELIABLE))) {
+                                sip_cancel_destroy(p);
+
+@@ -18032,6 +18061,7 @@
+                                }
+
+                        }
++                       }
+                }
+                ao2_unlock(peer);
+        }
+
