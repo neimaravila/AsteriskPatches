@@ -1,0 +1,10 @@
+--- apps/app_queue.c.orig	2019-11-08 10:24:50.429838315 -0500
++++ apps/app_queue.c	2019-11-08 10:29:27.448620407 -0500
+@@ -3905,6 +3905,7 @@
+ 		blob = ast_json_pack("{s: s, s: i, s: i}",
+ 				     "Queue", q->name,
+ 				     "Position", qe->pos,
++                                     "Prio", qe->prio,
+ 				     "Count", q->count);
+ 		ast_channel_publish_cached_blob(qe->chan, queue_caller_join_type(), blob);
+ 		ast_debug(1, "Queue '%s' Join, Channel '%s', Position '%d'\n", q->name, ast_channel_name(qe->chan), qe->pos );

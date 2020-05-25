@@ -1,0 +1,10 @@
+--- formats/format_ogg_vorbis.c.orig	2019-11-08 10:53:12.636902697 -0500
++++ formats/format_ogg_vorbis.c	2019-11-08 10:54:11.815757009 -0500
+@@ -381,7 +381,6 @@
+ 	struct ogg_vorbis_desc *desc = (struct ogg_vorbis_desc *) fs->_private;
+ 
+ 	if (desc->writing) {
+-		ast_log(LOG_WARNING, "Seeking is not supported on OGG/Vorbis streams in writing mode!\n");
+ 		return -1;
+ 	}
+ 
