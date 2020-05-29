@@ -25,7 +25,22 @@ wget https://raw.githubusercontent.com/neimaravila/AsteriskPatches/master/asteri
 
 patch -p0 < patch_chan_sip_register_external_auth.patch
 
-echo "exit 0" > /etc/asterisk/sip_auth.sh
+./configure
 
-chmod +x /etc/asterisk/sip_auth.sh
+make
 
+make install
+
+make samples
+
+make config
+
+cd /etc/asterisk
+
+wget https://raw.githubusercontent.com/neimaravila/AsteriskPatches/master/asterisk-16/chan_sip/sip_auth.sh
+
+chmod +x sip_auth.sh
+
+
+
+Criar o arquivo /etc/asterisk/cidades_autorizadas.txt com as cidades autorizadas a Logar
