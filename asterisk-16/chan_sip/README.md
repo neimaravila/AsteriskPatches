@@ -10,8 +10,12 @@ A aplicação externa pode ser desenvolvida em qualquer linguagem.
 Aplicação: Controle de REGISTER por GeoIP, Quantidade máxima de usuários simultâneos, etc.
 
 Asterisk: 16.10.0
+Sistema Operacional: CentOS 7
 
 Instalacao:
+
+yum install -y epel-release
+yum install -y libmaxminddb-devel
 
 cd /usr/src
 
@@ -41,6 +45,7 @@ wget https://raw.githubusercontent.com/neimaravila/AsteriskPatches/master/asteri
 
 chmod +x sip_auth.sh
 
-
+Baixar o Arquivo GeoLite2-City.mmdb em https://dev.maxmind.com/geoip/geoip2/geolite2/ (Necessário Cadastro)
+para a pasta /etc/asterisk/
 
 Criar o arquivo /etc/asterisk/cidades_autorizadas.txt com as cidades autorizadas a Logar
