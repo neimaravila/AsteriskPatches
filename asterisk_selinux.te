@@ -1,0 +1,14 @@
+module asterisk_selinux 1.0;
+
+require {
+        type var_run_t;
+        type var_lib_t;
+        type asterisk_t;
+        class file { create getattr open read unlink write };
+        class dir { add_name remove_name setattr write };
+}
+
+#============= asterisk_t ==============
+allow asterisk_t var_lib_t:dir { add_name remove_name write };
+allow asterisk_t var_lib_t:file { create getattr open read unlink write };
+allow asterisk_t var_run_t:dir setattr;
